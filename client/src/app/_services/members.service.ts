@@ -1,13 +1,13 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, pipe } from 'rxjs';
-import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Member } from '../models/member';
+import { of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { PaginatedResult } from '../models/pagination';
-import { User } from '../models/user';
 import { UserParams } from '../models/userParams';
 import { AccountService } from './account.service';
+import { User } from '../models/user';
 
 @Injectable({providedIn: 'root'})
 
@@ -94,7 +94,18 @@ export class MembersService {
   }
 
 
+  addLike(username: string) {
+    return this.http.post(this.baseUrl = 'likes/' + username, {})
+  }
 
+  getLikes(predicate: string) {
+    return this.http.get(this.baseUrl + 'likes?=' + predicate);
+  }
+
+
+
+
+  
   private getPaginatedResults<T>(url, params) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>(); 
 

@@ -29,12 +29,14 @@ export class ErrorInterceptor implements HttpInterceptor {
                   }
                 }
                 throw modalStateErrors.flat();
+              } else if (typeof(error.error) === 'object') {
+                this.toastr.error(error.error.title, error.status);
               } else {
-                this.toastr.error(error.statusText === "OK" ? "Validation Error" : error.statusText, error.status);
+                this.toastr.error(error.error, error.status);
               }
               break; 
             case 401: 
-              this.toastr.error(error.statusText === "OK" ? "Unauthorized" : error.statusText, error.status); 
+              this.toastr.error(error.statusText, error.status); 
               break; 
             case 404: 
               this.router.navigateByUrl('/not-found'); 

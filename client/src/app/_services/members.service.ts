@@ -73,7 +73,7 @@ export class MembersService {
   }
 
   updateMember(member: Member) {
-    return this.http.put(this.baseUrl + 'users', member).pipe(
+    return this.http.put(this.baseUrl + 'users/', member).pipe(
       map(() => {
         const index = this.members.indexOf(member);
         this.members[index] = member; 
@@ -95,11 +95,15 @@ export class MembersService {
 
 
   addLike(username: string) {
-    return this.http.post(this.baseUrl = 'likes/' + username, {})
+    return this.http.post(this.baseUrl + 'likes/' + username, {})
   }
 
-  getLikes(predicate: string) {
-    return this.http.get(this.baseUrl + 'likes?=' + predicate);
+
+  getLikes(predicate: string, pageNumber, pageSize) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate', predicate); 
+
+    return this.getPaginatedResults<Partial<Member[]>>(this.baseUrl + 'likes', params);
   }
 
 
@@ -109,7 +113,7 @@ export class MembersService {
   private getPaginatedResults<T>(url, params) {
     const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>(); 
 
-    return this.http.get<T>(this.baseUrl + 'users', { observe: 'response', params }).pipe(
+    return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map(response => {
         paginatedResult.result = response.body;
         if (response.headers.get('Pagination') !== null) {

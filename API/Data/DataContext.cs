@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Data
 {
     public class DataContext : IdentityDbContext<
-        AppUser, 
-        AppRole, 
-        int, 
-        IdentityUserClaim<int>, 
-        AppUserRole, 
-        IdentityUserLogin<int>, 
-        IdentityRoleClaim<int>, 
+        AppUser,
+        AppRole,
+        int,
+        IdentityUserClaim<int>,
+        AppUserRole,
+        IdentityUserLogin<int>,
+        IdentityRoleClaim<int>,
         IdentityUserToken<int>
     >
     {
@@ -22,6 +22,8 @@ namespace API.Data
 
         public DbSet<UserLike> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Connection> Connections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

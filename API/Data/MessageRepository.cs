@@ -41,7 +41,7 @@ namespace API.Data
         public async Task<Group> GetGroupForConnection(string connectionId)
         {
             return await _context.Groups
-                .Include(c => c.Connections) 
+                .Include(c => c.Connections)
                 .Where(c => c.Connections.Any(x => x.ConnectionId == connectionId))
                 .FirstOrDefaultAsync();
         }
@@ -101,8 +101,6 @@ namespace API.Data
                 {
                     message.DateRead = DateTime.UtcNow;
                 }
-
-                await _context.SaveChangesAsync();
             }
 
             return _mapper.Map<IEnumerable<MessageDto>>(messages);
@@ -111,11 +109,6 @@ namespace API.Data
         public void RemoveConnection(Connection connection)
         {
             _context.Connections.Remove(connection);
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

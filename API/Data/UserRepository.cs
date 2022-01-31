@@ -18,6 +18,7 @@ namespace API.Data
             this._context = context;
         }
 
+        //Get a single member's info by their username)
         public async Task<MemberDto> GetMemberAsync(string username)
         {
             return await _context.Users
@@ -26,6 +27,7 @@ namespace API.Data
                 .SingleOrDefaultAsync();
         }
 
+        //Get all users and return them in a paged list.
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
             var query = _context.Users.AsQueryable();
@@ -49,11 +51,13 @@ namespace API.Data
                 userParams.PageSize);
         }
 
+        //Get a user by their Id number
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
+        //Get a user by their username
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
             return await _context.Users
@@ -61,6 +65,13 @@ namespace API.Data
             .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        //Gets the specified user's gender
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
+        }
+
+        //Gets all users
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users
@@ -68,6 +79,7 @@ namespace API.Data
                 .ToListAsync();
         }
 
+        //Updates user profile
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
